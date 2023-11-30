@@ -23,8 +23,7 @@ class Story {
   /** Parses hostname out of URL and returns it. */
 
   getHostName() {
-    // UNIMPLEMENTED: complete this function!
-    return "hostname.com";
+    return new URL(this.url).host;
   }
 }
 
@@ -74,15 +73,30 @@ class StoryList {
   async addStory(user, { title, author, url }) {
     const token = user.loginToken;
     const response = await axios({
-      url: `${BASE_URL}/stories`,
       method: "POST",
+      url: `${BASE_URL}/stories`,
       data: { token, story: { title, author, url } },
     });
+
     const story = new Story(response.data.story);
     this.stories.unshift(story);
     user.ownStories.unshift(story);
 
     return story;
+  }
+
+  async removeStory(user, storyId) {
+    const token = user.loginToken;
+    await axios({
+      method: "DELETE",
+      url: `${BASE_URL}/stories/${storyId}`,
+      data: { token: user.loginToken },
+    });
+
+    this.stories = this.stories.filter((story) => story.storyID !== storyId);
+
+    user.ownStories = user.ownStories.filter((s) => s.storyId !== storyId);
+    user.favorites = user.favories.filter((s) => s.storyId !== storyId);
   }
 }
 
@@ -195,5 +209,30 @@ class User {
       console.error("loginViaStoredCredentials failed", err);
       return null;
     }
+  }
+
+  // Add a story to favories
+  async addFavorite(story) {
+    this.favories.push(story);
+    await this._addOrRemoveFavorite("add", story);
+  }
+  // Remove a story from favorites
+  async removeFavorite(story) {
+    this.favorites = this.favorites.filter((s) => s.storyId !== story.storyId);
+    await this._addOrRemoveFavorite("remove", story);
+  }
+
+  async _addOrRemoveFavorite(newState, story) {
+    const method = newState === "add" ? "POST" : "DELETE";
+    const token = this.loginToken;
+    await axios({
+      url: `${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
+      method: method,
+      data: { token },
+    });
+  }
+
+  isFavorite(story) {
+    return this.favorites.some((s) => s.storyId === story.storyId);
   }
 }
