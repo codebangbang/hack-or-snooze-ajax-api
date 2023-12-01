@@ -21,6 +21,7 @@ function navSubmitStoryClick(evt) {
   $allStoriesList.show();
   $submitForm.show();
 }
+
 $navSubmitStory.on("click", navSubmitStoryClick);
 
 // Show Favorite Stories
@@ -58,13 +59,14 @@ function navProfileClick(evt) {
   hidePageComponents();
   $userProfile.show();
 }
+
 $navUserProfile.on("click", navProfileClick);
 
 /** When a user first logins in, update the navbar to reflect that. */
 
 function updateNavOnLogin() {
   console.debug("updateNavOnLogin");
-  $(".main-nav-links").show();
+  $(".main-nav-links").css("display", "flex");
   $navLogin.hide();
   $navLogOut.show();
   $navUserProfile.text(`${currentUser.username}`).show();

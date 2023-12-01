@@ -49,12 +49,38 @@
     </nav>
 
     <!-- area for stories (all stories, user stories, favorites) -->
-    <section class="stories-container container">
+    <section id="stories-container" class="stories-container container">
+      <!-- Add a new Story -->
+
+      <form action="" id="submit-form" class="hidden">
+        <h4>Submit Story</h4>
+        <div>
+          <label for="create-author">author</label>
+          <input id="create-author" placeholder="author name" />
+        </div>
+        <div>
+          <label for="create-title">title</label>
+          <input id="create-title" placeholder="story title" />
+        </div>
+        <div>
+          <label for="create-url">url</label>
+          <input id="create-url" placeholder="url" />
+        </div>
+        <button type="submit">submit</button>
+        <hr />
+      </form>
+
       <!-- loading message (removed by JS after stories loaded) -->
       <div id="stories-loading-msg">Loading&hellip;</div>
 
       <!-- List of all stories -->
       <ol id="all-stories-list" class="stories-list"></ol>
+
+      <!-- List of favorited stories -->
+      <ol id="favorited-stories" class="hidden stories-list"></ol>
+
+      <!-- List of the user's stories -->
+      <ol id="my-stories" class="hidden stories-list"></ol>
     </section>
 
     <!-- Login and signup forms -->
@@ -108,31 +134,6 @@
           />
         </div>
         <button type="submit">create account</button>
-        <hr />
-      </form>
-
-      <!-- Add a new Story -->
-
-      <form
-        action="#"
-        id="addNewStory-form"
-        class="account-form hidden"
-        method="post"
-      >
-        <h4>Submit Story</h4>
-        <div>
-          <label for="create-author">author</label>
-          <input id="create-author" placeholder="author name" />
-        </div>
-        <div>
-          <label for="create-title">title</label>
-          <input id="create-title" placeholder="story title" />
-        </div>
-        <div>
-          <label for="create-url">url</label>
-          <input id="create-url" placeholder="url" />
-        </div>
-        <button type="submit">submit</button>
         <hr />
       </form>
     </section>

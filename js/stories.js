@@ -8,7 +8,6 @@ let storyList;
 async function getAndShowStoriesOnStart() {
   storyList = await StoryList.getStories();
   $storiesLoadingMsg.remove();
-
   putStoriesOnPage();
 }
 
@@ -26,27 +25,27 @@ function generateStoryMarkup(story, showDeleteBtn = false) {
   const showStar = Boolean(currentUser);
 
   return $(`
-      <li id="${story.storyId}">
+    <li id="${story.storyId}">
       <div>
       ${showDeleteBtn ? getDeleteBtnHTML() : ""}
       ${showStar ? getStarHTML(story, currentUser) : ""}
-        <a href="${story.url}" target="a_blank" class="story-link">
-          ${story.title}
-        </a>
-        <small class="story-hostname">(${hostName})</small>
-        <small class="story-author">by ${story.author}</small>
-        <small class="story-user">posted by ${story.username}</small>
-        </div>
-      </li>
-    `);
+      <a href="${story.url}" target="a_blank" class="story-link">
+        ${story.title}
+      </a>
+      <small class="story-hostname">(${hostName})</small>
+      <small class="story-author">by ${story.author}</small>
+      <small class="story-user">posted by ${story.username}</small>
+      </div>
+    </li>
+  `);
 }
 
 // Make delete button
 function getDeleteBtnHTML() {
   return `
-  <span class="trash-can"> 
-  i class="fas fa-trash-alt"></i>
-  </span>`;
+    <span class="trash-can"> 
+      <i class="fas fa-trash-alt"></i>
+    </span>`;
 }
 
 // Make star for favorite/not favorite
@@ -78,12 +77,14 @@ function putStoriesOnPage() {
 // Deleting a story
 async function deleteStory(evt) {
   console.debug("deleteStory");
-  const $closestLI = $(evt.target).closes("li");
+  const $closestLi = $(evt.target).closest("li");
   const storyId = $closestLi.attr("id");
+
   await storyList.removeStory(currentUser, storyId);
 
   await putUserStoriesOnPage();
 }
+
 $ownStories.on("click", ".trash-can", deleteStory);
 
 // Submitting new stories to form
@@ -143,14 +144,15 @@ function putFavoritesListOnPage() {
 // favorite and unfavorite a story
 async function toggleStoryFavorite(evt) {
   console.debug("toggleStoryFavorite");
+
   const $tgt = $(evt.target);
-  const $closestLi = $tgt.closes("li");
-  const storyId = $closesLi.attr("id");
-  const story = storyList.stories.find((s) => s.soryId === storyId);
+  const $closestLi = $tgt.closest("li");
+  const storyId = $closestLi.attr("id");
+  const story = storyList.stories.find((s) => s.storyId === storyId);
 
   if ($tgt.hasClass("fas")) {
     await currentUser.removeFavorite(story);
-    $tgt.closes("i").toggleClass("fas far");
+    $tgt.closest("i").toggleClass("fas far");
   } else {
     await currentUser.addFavorite(story);
     $tgt.closest("i").toggleClass("fas far");

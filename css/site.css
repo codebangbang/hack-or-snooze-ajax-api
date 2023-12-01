@@ -3,6 +3,8 @@
 body {
   font-family: Arimo, sans-serif;
   margin: 8px 7.5vw;
+  height: 100vh;
+  
 }
 
 h1 {
@@ -38,6 +40,11 @@ a:hover {
   flex-direction: column;
   align-self: center;
   background-color: #f6f6ef;
+}
+
+.stories-container{
+  height: calc(100vh-100px);
+  overflow: scroll;
 }
 
 .hidden {
