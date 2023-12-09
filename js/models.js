@@ -213,8 +213,9 @@ class User {
 
   // Add a story to favories
   async addFavorite(story) {
-    this.favories.push(story);
+    this.favorites.push(story);
     await this._addOrRemoveFavorite("add", story);
+    console.log(story);
   }
   // Remove a story from favorites
   async removeFavorite(story) {
